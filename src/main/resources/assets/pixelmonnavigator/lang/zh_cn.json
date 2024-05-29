@@ -1,0 +1,12 @@
+{
+  "item.pixelmonnavigator.pixelmon_navigator": "§b宝可梦领航员",
+
+  "pixelmonnavigator.msg.missing_dependency": "缺少前置模组：%s，所以宝可梦领航员收不到信号",
+  "pixelmonnavigator.msg.contacts_added": "已将 %s 添加至宝可梦领航员联系人中！",
+
+  "pixelmonnavigator.gui.no_registered_name": "未知",
+  "pixelmonnavigator.gui.no_description": "无描述",
+  "pixelmonnavigator.gui.no_position": "无位置信息",
+  "pixelmonnavigator.gui.no_intro": "无个人简介",
+  "pixelmonnavigator.gui.hidden_ave_lvl": "保密"
+}

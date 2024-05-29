@@ -1,0 +1,118 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url = 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        maven { url = 'https://plugins.gradle.org/m2/' }
+        maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = "https://jitpack.io" }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url = 'https://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url = 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        maven { url = "https://jitpack.io" }
+        flatDir {
+            dirs 'libs'
+        }
+    }
+}
+
+repositories {
+    maven {
+        url 'https://www.cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
+        }
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+
+version = modVersion
+group = modGroup
+archivesBaseName = modName
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(11)
+
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+
+minecraft {
+    mappings channel: mappingsChannel, version: mappingsVersion
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                pixelmondetector {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                pixelmondetector {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', 'pixelmondetector', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+
+            mods {
+                pixelmondetector {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:' + minecraftVersion + '-' + forgeVersion
+	implementation fg.deobf('curse.maven:pixelmon-389487:' + pixelmonVersion)
+//    implementation files("libs/PixelmonVirtualBattleNPC-Forge-1.16.5-${pixelmonvbattlenpcVersion}.jar")
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            modId: modId, modName: modName, modVersion: modVersion
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+jar.finalizedBy('reobfJar')
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}

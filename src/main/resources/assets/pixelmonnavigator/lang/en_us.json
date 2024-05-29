@@ -1,0 +1,12 @@
+{
+  "item.pixelmonnavigator.pixelmon_navigator": "§bPixelmon Navigator",
+
+  "pixelmonnavigator.msg.missing_dependency": "Missing dependency mod: %s, so Pixelmon Navigator cannot receive signals",
+  "pixelmonnavigator.msg.contacts_added": "Added %s to Pixelmon Navigator contacts!",
+
+  "pixelmonnavigator.gui.no_registered_name": "Unknown",
+  "pixelmonnavigator.gui.no_description": "No description",
+  "pixelmonnavigator.gui.no_position": "No position info",
+  "pixelmonnavigator.gui.no_intro": "No Introduction",
+  "pixelmonnavigator.gui.hidden_ave_lvl": "Secrecy"
+}
