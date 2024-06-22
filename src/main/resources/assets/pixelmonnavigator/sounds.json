@@ -1,0 +1,11 @@
+{
+  "pixelmonnavigator.gui.elem_click": {
+    "sounds": [
+      {
+        "name": "pixelmonnavigator:gui/elem_click",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitle.pixelmonnavigator.gui.elem_click"
+  }
+}
