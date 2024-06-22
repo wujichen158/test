@@ -6,6 +6,7 @@ import com.github.lileep.pixelmonnavigator.lib.Reference;
 import com.github.lileep.pixelmonnavigator.network.PixelmonNavigatorNetwork;
 import com.github.lileep.pixelmonnavigator.network.packet.data.ServerSendTcDataPacket;
 import com.github.lileep.pixelmonnavigator.register.ItemRegister;
+import com.github.lileep.pixelmonnavigator.register.SoundRegister;
 import com.pixelmonmod.pixelmon.api.config.api.yaml.YamlConfigFactory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -39,6 +40,7 @@ public class PixelmonNavigator {
         bus.addListener(this::setupNetwork);
 
         ItemRegister.init(bus);
+        SoundRegister.init(bus);
 
         MinecraftForge.EVENT_BUS.register(new ConnectionHandler());
         MinecraftForge.EVENT_BUS.register(this);
