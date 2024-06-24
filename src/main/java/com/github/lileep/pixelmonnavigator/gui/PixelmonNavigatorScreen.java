@@ -97,7 +97,7 @@ public class PixelmonNavigatorScreen extends Screen {
     private float uiWidth;
     private float uiHeight;
     private float elemX;
-//    private float elemY;
+    //    private float elemY;
     private int elemGap;
     private float elemWidth;
     private float elemHeight;
@@ -107,6 +107,7 @@ public class PixelmonNavigatorScreen extends Screen {
     private float scrollerHeight;
     private float scrollBarHeight;
     private float scrollOffs;
+    private boolean scrolling;
 
 
     // UI Info part
@@ -210,7 +211,8 @@ public class PixelmonNavigatorScreen extends Screen {
         scrollerWidth = 1.5f;
         scrollerHeight = 8.333333f;
 
-        scrollBarHeight = 77.5f;
+        scrollBarHeight = 86f;
+        scrolling = false;
 
 
         avatarX = this.centerW + 2f;
@@ -429,6 +431,7 @@ public class PixelmonNavigatorScreen extends Screen {
 //
 //        System.out.printf("mouse info: elemX: %f, elemY: %f, screen w: %d center: %d, mouse center: %f\n", mouseX, mouseY, this.width, centerX, mouseCenterX);
 
+        this.scrolling = false;
         float elemY = 91.5f;
         // Preprocess the mouse pos to avoid unnecessary calculation
         if (isMouseInArea(mouseX, mouseY, elemX, elemX + elemWidth, elemY, elemY + ELEM_GAPED_HEIGHT * ELEM_PER_PG)) {
@@ -447,6 +450,9 @@ public class PixelmonNavigatorScreen extends Screen {
 
                 elemY += ELEM_GAPED_HEIGHT;
             }
+        } else if (isMouseInArea(mouseX, mouseY,
+                scrollerX - 0.5f, scrollerX + scrollerWidth + 0.5f, scrollerY, scrollerY + scrollBarHeight)) {
+            this.scrolling = true;
         }
 
 //        if (mouseCenterX >= LEFT_BOUND && mouseCenterX <= RIGHT_BOUND && mouseY >= TOP_BOUND && mouseY <= BOTTOM_BOUND) {
@@ -461,6 +467,18 @@ public class PixelmonNavigatorScreen extends Screen {
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        if (this.scrolling && this.isScrollBarActive()) {
+            float ratio = MathHelper.clamp(
+                    ((float) mouseY - this.scrollerY - this.scrollerHeight / 2f) / (this.scrollBarHeight - this.scrollerHeight),
+                    0.0F, 1.0F);
+            recalScrollOffs(ratio);
+            this.currentRow = MathHelper.clamp((int) (ratio * this.sizeWithoutLastPg), 0, this.sizeWithoutLastPg);
+            return true;
+        }
+        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+    }
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
@@ -482,8 +500,20 @@ public class PixelmonNavigatorScreen extends Screen {
         return this.sizeWithoutLastPg > 0;
     }
 
+    /**
+     * Recalculate the offset of scroller
+     */
     private void recalScrollOffs() {
-        this.scrollOffs = this.scrollBarHeight * ((float) this.currentRow / (float)this.sizeWithoutLastPg);
+        recalScrollOffs((float) this.currentRow / (float) this.sizeWithoutLastPg);
+    }
+
+    /**
+     * Recalculate the offset of scroller using current line / total valid lines
+     *
+     * @param ratio current line / total valid lines
+     */
+    private void recalScrollOffs(float ratio) {
+        this.scrollOffs = (this.scrollBarHeight - this.scrollerHeight) * ratio;
     }
 
     @Override
