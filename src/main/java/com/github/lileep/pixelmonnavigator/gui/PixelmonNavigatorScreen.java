@@ -52,48 +52,46 @@ public class PixelmonNavigatorScreen extends Screen {
     private static final String AVATAR_PATH = "avatars";
 
     // Base param part
-
-    private float centerW;
-    private TrainerCard currentTrainerCard;
-    private int currentRow = 0;
-    private ResourceLocation currentAvatar = DEFAULT_AVATAR;
-    private String currentAveLvl = I18n.get("pixelmonnavigator.gui.hidden_ave_lvl");
-    private String[] currentIntros;
-    private final List<TrainerCard> availableTrainerCards;
-    private final List<ResourceLocation> availableTrainerSprites = Lists.newArrayList();
-    private final int sizeWithoutLastPg;
-    private TextFieldWidget searchBar;
-
-    // Bg part
-
     private static final float U_RES = 1800;
     private static final float V_RES = 1300;
     private static final UvObj BLACK_SCREEN = new UvObj(1243, 38, 1740, 688, U_RES, V_RES);
     private static final UvObj OPENED_SCREEN = new UvObj(722, 38, 1219, 688, U_RES, V_RES);
     private static final UvObj BG_SHELL = new UvObj(0, 0, 670, 1297, U_RES, V_RES);
     private static final UvObj UI_BG = new UvObj(714, 726, 1202, 1283, U_RES, V_RES);
+    private static final int ELEM_PER_PG = 7;
+    private static final int ELEM_GAPED_HEIGHT = 12;
+    private static final int ANIME_FRAMES = 80;
+    private static final int TOTAL_FRAMES = 100;
 
-    private float shellYOffset;
-    private float shellHeight;
-    private float shellWidth;
-    private float screeY;
-    private float screenWidth;
-    private float screenHeight;
+    // Bg part
+    private static final String OPEN_ANIME = "open";
+    private static final String SELECTION_ANIME = "selection";
+    private final List<TrainerCard> availableTrainerCards;
+    private final List<ResourceLocation> availableTrainerSprites = Lists.newArrayList();
+    private final int sizeWithoutLastPg;
+    private float centerW;
+    private TrainerCard currentTrainerCard;
+    private int currentRow = 0;
+    private ResourceLocation currentAvatar = DEFAULT_AVATAR;
+    private String currentAveLvl = I18n.get("pixelmonnavigator.gui.hidden_ave_lvl");
+    private String[] currentIntros;
+    private TextFieldWidget searchBar;
 
 
     // UI elem part
-
-    private static final int ELEM_PER_PG = 7;
-    private static final int ELEM_GAPED_HEIGHT = 12;
+    private float shellYOffset;
+    private float shellHeight;
 
 //    private static final UvObj LIST_ELEM = new UvObj(1259, 735, 1417, 785, U_RES, V_RES);
 //    private static final UvObj LIST_ELEM_SELECTED = new UvObj(1448, 735, 1606, 785, U_RES, V_RES);
 //    private static final UvObj SCROLL_ELEM = new UvObj(1208, 756, 1240, 827, U_RES, V_RES);
-
-    private float uiY;
+    private float shellWidth;
 
     // Width must be taken into consideration
-
+    private float screeY;
+    private float screenWidth;
+    private float screenHeight;
+    private float uiY;
     private float uiWidth;
     private float uiHeight;
     private float elemX;
@@ -104,14 +102,13 @@ public class PixelmonNavigatorScreen extends Screen {
     private float scrollerX;
     private float scrollerY;
     private float scrollerWidth;
+
+
+    // UI Info part
     private float scrollerHeight;
     private float scrollBarHeight;
     private float scrollOffs;
     private boolean scrolling;
-
-
-    // UI Info part
-
     private float avatarX;
     private float avatarY;
     private float nameX;
@@ -121,20 +118,13 @@ public class PixelmonNavigatorScreen extends Screen {
     private float infoX;
     private float infoY;
     private float infoYGap;
+
+    // Animation
     private float infoFontSize;
     private float infoWidthFactor;
     private float introX;
     private float introY;
-
-    // Animation
-
     private Map<String, AnimationHelper> animations = Maps.newConcurrentMap();
-
-    private static final int ANIME_FRAMES = 80;
-    private static final int TOTAL_FRAMES = 100;
-
-    private static final String OPEN_ANIME = "open";
-    private static final String SELECTION_ANIME = "selection";
 
 
     public PixelmonNavigatorScreen(List<TrainerCard> trainerCards) {
@@ -426,7 +416,8 @@ public class PixelmonNavigatorScreen extends Screen {
                     ((float) mouseY - this.scrollerY - this.scrollerHeight / 2f) / (this.scrollBarHeight - this.scrollerHeight),
                     0.0F, 1.0F);
             recalScrollOffs(ratio);
-            this.currentRow = MathHelper.clamp((int) (ratio * this.sizeWithoutLastPg), 0, this.sizeWithoutLastPg);
+            this.currentRow = MathHelper.clamp(MathHelper.ceil(ratio * this.sizeWithoutLastPg),
+                    0, this.sizeWithoutLastPg);
             return true;
         }
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
