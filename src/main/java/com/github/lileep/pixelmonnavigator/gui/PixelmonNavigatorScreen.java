@@ -137,18 +137,6 @@ public class PixelmonNavigatorScreen extends Screen {
     private static final String SELECTION_ANIME = "selection";
 
 
-    // Status part
-
-//    private static final UvObj CAN_BATTLE_ICON = new UvObj(1256, 811, 1291, 846, U_RES, V_RES);
-//    private static final UvObj CANNOT_BATTLE_ICON = new UvObj(1296, 811, 1331, 846, U_RES, V_RES);
-//    private static final UvObj NO_SIGNAL_ICON = new UvObj(1339, 811, 1374, 846, U_RES, V_RES);
-
-
-    // Avatar
-
-//    private static final UvObj DEFAULT_AVATAR = new UvObj(1259, 898, 1386, 1025, U_RES, V_RES);
-
-
     public PixelmonNavigatorScreen(List<TrainerCard> trainerCards) {
         super(StringTextComponent.EMPTY);
         this.availableTrainerCards = trainerCards;
@@ -271,14 +259,6 @@ public class PixelmonNavigatorScreen extends Screen {
     }
 
     private void drawScreenBackground(MatrixStack matrix, int frame) {
-//        double thing = frame >= 60 ? 46 : frame++ < 20 ? 0 : ( .54431 / 3.0 ) * Math.pow(( frame - 20 ), 3 / 2.0);
-//        double thing = 46;
-//        if (frame < 60) {
-//            Minecraft.getInstance().getTextureManager().bind(texture);
-//            ScreenHelper.simpleDrawImageQuad(matrix, (float) (centerW - 119), (float) (59 + thing), 15.08118f, 134, 811 / 1748f, 399 / 945f, 872 / 1748f, 941 / 945f, 1);
-//        } else {
-//        int xPos = this.centerW - 119;
-//    }
         Minecraft.getInstance().getTextureManager().bind(GUI_TEXTURE);
 
         // Black screen
@@ -316,10 +296,8 @@ public class PixelmonNavigatorScreen extends Screen {
     }
 
     private void drawLeftPage(MatrixStack matrix, int mouseX, int mouseY) {
-//        this.searchBar.render(matrix, mouseX, mouseY, partialTicks);
         float elemY = 91.5f;
         for (int i = currentRow; 0 <= i && i < Math.min(availableTrainerCards.size(), currentRow + ELEM_PER_PG); i++) {
-//            float elemY = (i - currentRow) * ELEM_HEIGHT + calRelativeHeight(435) + 5;
             TrainerCard tc = availableTrainerCards.get(i);
 
             boolean isSelected = currentTrainerCard == tc ||
@@ -327,15 +305,9 @@ public class PixelmonNavigatorScreen extends Screen {
 
             // Draw elem bg
             if (isSelected) {
-//                ScreenHelper.simpleDrawImageQuad(matrix, elemX, elemY, elemWidth, elemHeight,
-//                        LIST_ELEM_SELECTED.getUs(), LIST_ELEM_SELECTED.getVs(), LIST_ELEM_SELECTED.getUe(), LIST_ELEM_SELECTED.getVe(), 0);
-
                 ScreenHelper.drawImageQuad(UI_ELEM_SELECTED_TEXTURE, matrix, elemX, elemY, elemWidth, elemHeight,
                         0, 0, 1, 1, 0);
             } else {
-//                ScreenHelper.simpleDrawImageQuad(matrix, elemX, elemY, elemWidth, elemHeight,
-//                        LIST_ELEM.getUs(), LIST_ELEM.getVs(), LIST_ELEM.getUe(), LIST_ELEM.getVe(), 0);
-
                 ScreenHelper.drawImageQuad(UI_ELEM_TEXTURE, matrix, elemX, elemY, elemWidth, elemHeight,
                         0, 0, 1, 1, 0);
             }
@@ -343,29 +315,19 @@ public class PixelmonNavigatorScreen extends Screen {
             // Draw scroller
             ScreenHelper.drawImageQuad(SCROLLER_TEXTURE, matrix, scrollerX, scrollerY + this.scrollOffs, scrollerWidth, scrollerHeight,
                     0, 0, 1, 1, 0);
-//            this.blit(p_230450_1_, i + 119, j + 15 + k, 176 + (this.isScrollBarActive() ? 0 : 12), 0, 12, 15);
 
             // Draw status icon
             if (tc.isSameWorld()) {
                 if (tc.isCanBattle()) {
-//                    ScreenHelper.simpleDrawImageQuad(matrix,
-//                            elemX + 2, elemY + 4, 5, 5,
-//                            CAN_BATTLE_ICON.getUs(), CAN_BATTLE_ICON.getVs(), CAN_BATTLE_ICON.getUe(), CAN_BATTLE_ICON.getVe(), 0);
                     ScreenHelper.drawImageQuad(CAN_BATTLE_ICON, matrix,
                             elemX + 2, elemY + 4, 5, 5,
                             0, 0, 1, 1, 0);
                 } else {
-//                    ScreenHelper.simpleDrawImageQuad(matrix,
-//                            elemX + 2, elemY + 4, 5, 5,
-//                            CANNOT_BATTLE_ICON.getUs(), CANNOT_BATTLE_ICON.getVs(), CANNOT_BATTLE_ICON.getUe(), CANNOT_BATTLE_ICON.getVe(), 0);
                     ScreenHelper.drawImageQuad(CANNOT_BATTLE_ICON, matrix,
                             elemX + 2, elemY + 4, 5, 5,
                             0, 0, 1, 1, 0);
                 }
             } else {
-//                ScreenHelper.simpleDrawImageQuad(matrix,
-//                        elemX + 2, elemY + 4, 5, 5,
-//                        NO_SIGNAL_ICON.getUs(), NO_SIGNAL_ICON.getVs(), NO_SIGNAL_ICON.getUe(), NO_SIGNAL_ICON.getVe(), 0);
                 ScreenHelper.drawImageQuad(NO_SIGNAL_ICON, matrix,
                         elemX + 2, elemY + 4, 5, 5,
                         0, 0, 1, 1, 0);
@@ -437,7 +399,6 @@ public class PixelmonNavigatorScreen extends Screen {
         if (isMouseInArea(mouseX, mouseY, elemX, elemX + elemWidth, elemY, elemY + ELEM_GAPED_HEIGHT * ELEM_PER_PG)) {
             for (int i = currentRow; 0 <= i && i < Math.min(availableTrainerCards.size(), currentRow + ELEM_PER_PG); i++) {
                 if (isMouseInArea(mouseX, mouseY, elemX, elemX + elemWidth, elemY, elemY + elemHeight)) {
-//                    System.out.println("current i is: " + i);
                     TrainerCard tc = availableTrainerCards.get(i);
                     if (tc.isSameWorld()) {
                         setCurrentTrainerCard(tc);
@@ -455,15 +416,6 @@ public class PixelmonNavigatorScreen extends Screen {
             this.scrolling = true;
         }
 
-//        if (mouseCenterX >= LEFT_BOUND && mouseCenterX <= RIGHT_BOUND && mouseY >= TOP_BOUND && mouseY <= BOTTOM_BOUND) {
-//            int i = currentRow + (truncatedMouseY - TOP_BOUND) / ELEM_HEIGHT;
-//            if (i >= 0 && i < availableTrainerCards.size()) {
-//                System.out.println("current i is: " + i);
-//                setCurrentTrainerCard(availableTrainerCards.get(i));
-//                minecraft.getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
-////                beginSelectAnimation();
-//            }
-//        }
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
@@ -493,7 +445,6 @@ public class PixelmonNavigatorScreen extends Screen {
         }
 
         return true;
-//        return super.mouseScrolled(mouseX, mouseY, scroll);
     }
 
     private boolean isScrollBarActive() {
@@ -526,13 +477,6 @@ public class PixelmonNavigatorScreen extends Screen {
         if (i != -1) {
             this.animations.put(SELECTION_ANIME, new AnimationHelper(4, (matrix, frame) -> {
                 if (i < this.currentRow + ELEM_PER_PG && i >= this.currentRow) {
-//                    float x = centerW + LEFT_BOUND;
-//                    int y = (i - currentRow) * ELEM_HEIGHT + TOP_BOUND;
-//                    ScreenHelper.drawImageQuad(Resources.pixelmonCreativeInventory, matrix, x - 2, y + 2, 140, 20, 81f / 256f, 185f / 256f, 105f / 256f, 205f / 256f, 1, 1, 1, 1, 1);
-//                    float offset = frame / 2f;
-//                    ScreenHelper.drawImageQuad(currentPokemon.getDefaultForms().get(0).getGenderProperties(Gender.MALE).getDefaultPalette().getSprite(),
-//                            matrix, x - offset, y - offset, 20 + offset * 2, 20 + offset * 2, 0, 0, 1, 1, 1, 1, 1, 1, 1);
-
                     // Do not create extra Optional here, may affect the performance
                     float elemY = 91.5f + (i - currentRow) * ELEM_GAPED_HEIGHT;
                     float offset = frame / 2f;
@@ -543,11 +487,6 @@ public class PixelmonNavigatorScreen extends Screen {
                                 5 + offset * 2, 5 + offset * 2,
                                 0, 0, 1, 1, 0);
                     }
-
-//                    // Draw npc name
-//                    ScreenHelper.drawScaledSquashedString(matrix, this.currentTrainerCard.getRegisteredName(),
-//                            x + elemGap * 2 - offset, y + 4 - offset,
-//                            0xffffff, 8 + offset * 2, 42.5);
                 }
             }));
         }
@@ -571,7 +510,7 @@ public class PixelmonNavigatorScreen extends Screen {
     /**
      * Currently generate a random list
      *
-     * @return
+     * @return a trainer list
      */
     @Deprecated
     private List<TrainerCard> getTrainerList() {
@@ -654,14 +593,6 @@ public class PixelmonNavigatorScreen extends Screen {
 
     private int getCurrentTrainerIndex() {
         return this.availableTrainerCards.indexOf(this.currentTrainerCard);
-    }
-
-    private float calRelativeHeight(float originalHeight) {
-        return shellHeight * originalHeight / 1297f;
-    }
-
-    private float calRelativeWidth(float originalWidth) {
-        return shellWidth * originalWidth / 670f;
     }
 
     private boolean isMouseInArea(double mouseX, double mouseY, float xMin, float xMax, float yMin, float yMax) {
